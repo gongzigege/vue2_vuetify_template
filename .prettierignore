@@ -1,0 +1,13 @@
+# Ignore artifacts:
+build
+coverage
+.gitignore
+.prettierignore
+yarn.lock
+package-lock.json
+LICENSE
+*.ejs
+.DS_Store
+node_modules
+/dist
+ 

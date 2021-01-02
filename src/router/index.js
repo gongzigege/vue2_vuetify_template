@@ -1,9 +1,16 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
+import Layout from '@/layouts'
+
 Vue.use(VueRouter)
 
-export const constantRoutes = []
+export const constantRoutes = [
+  {
+    path: '/',
+    component: Layout
+  }
+]
 
 export const asyncRoutes = [
   {},

@@ -10,7 +10,7 @@
   >
     <v-app-bar-nav-icon
       class="d-flex d-lg-none d-xl-node"
-      @click="toggleAppBar"
+      @click="toggleAppBarHandle"
     ></v-app-bar-nav-icon>
     <div class="d-flex align-center d-lg-none d-xl-none">
       <v-img
@@ -46,17 +46,19 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'AppBar',
 
   computed: {
-    ...mapGetters(['sidebar', 'avatar'])
+    ...mapActions({
+      toggleAppBar: 'app/toggleAppBar'
+    })
   },
   methods: {
-    toggleAppBar() {
-      this.$store.dispatch('app/toggleAppBar')
+    toggleAppBarHandle() {
+      this.toggleAppBar
     }
   }
 }

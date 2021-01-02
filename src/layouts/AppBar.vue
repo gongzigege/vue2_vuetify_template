@@ -50,13 +50,13 @@
       <v-tabs
         align-with-title
         color="#FFFFFF"
-        background-color="#EEEEEE"
+        background-color="#FFFFFF"
         height="36"
         next-icon="mdi-arrow-right-bold-box-outline"
         prev-icon="mdi-arrow-left-bold-box-outline"
         show-arrows
         hide-slider
-        class="elevation-2 gy-tabs"
+        class="elevation-1 gy-tabs"
       >
         <v-tab
           active-class="gy-tab--active"
@@ -64,8 +64,11 @@
           :ripple="false"
           v-for="n in 30"
           :key="n"
+          :title="n"
         >
-          Normal {{ n }}
+          <span class="gy-tab--text">
+             阿斯顿发生按时发士 {{ n }}
+          </span>
           <v-btn icon small class="gy-btn--close">
             <v-icon size="18">mdi-close</v-icon>
           </v-btn>
@@ -105,7 +108,31 @@ export default {
 @import './index.scss';
 
 .gy-tab {
-  padding: 0 0 0 16px;
+  padding: 0 0 0 12px;
+}
+
+.gy-tab--text {
+  position: relative;
+  display: inline-block;
+  height: 100%;
+  line-height: 36px;
+  min-width: 8rem; // 4 * 16px
+  max-width: 10rem;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 0.8125rem;
+  text-align: left;
+}
+
+.gy-tab--text::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: auto;
+  right: -0.5rem;
+  padding-left: 1.5rem;
+  height: 100%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 1));
 }
 
 .gy-tab::after {
@@ -123,6 +150,9 @@ export default {
   background-color: #4caf50;
   .gy-btn--close {
     opacity: 1;
+  }
+  .gy-tab--text::after {
+    background: linear-gradient(to right, transparent, rgba(97, 184, 101, 0.9));
   }
 }
 

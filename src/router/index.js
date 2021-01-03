@@ -7,8 +7,39 @@ Vue.use(VueRouter)
 
 export const constantRoutes = [
   {
+    path: '/layout',
+    component: Layout,
+    meta: {
+      title: 'Layout',
+      action: 'mdi-silverware-fork-knife'
+    }
+  },
+  {
     path: '/',
-    component: Layout
+    component: Layout,
+    redirect: { name: 'Home' },
+    meta: {
+      title: 'Page',
+      action: 'mdi-silverware-fork-knife'
+    },
+    children: [
+      {
+        path: 'home',
+        component: () => import('@/views/Home'),
+        name: 'Home',
+        meta: {
+          title: '首页'
+        }
+      },
+      {
+        path: 'about',
+        component: () => import('@/views/About'),
+        name: 'About',
+        meta: {
+          title: '关于'
+        }
+      }
+    ]
   }
 ]
 

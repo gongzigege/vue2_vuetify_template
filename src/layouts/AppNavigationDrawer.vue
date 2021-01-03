@@ -1,9 +1,11 @@
 <template>
   <v-navigation-drawer
+    id="navigation-drawer"
     app
     floating
     disable-route-watcher
     width="300"
+    class="gy-navigation-drawer"
     v-model="$store.state.app.appbar.opened"
   >
     <template #prepend>
@@ -30,94 +32,84 @@
 
     <template #default>
       <v-list nav dense>
-        <v-list-group
-          v-for="item in items"
-          :key="item.title"
-          v-model="item.active"
-          no-action
-          color="primary"
-        >
-          <template v-slot:activator>
-            <v-list-item-icon>
-              <v-icon v-text="item.action"></v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title v-text="item.title"></v-list-item-title>
-            </v-list-item-content>
-          </template>
-
+        <template v-for="item in items">
           <v-list-item
+            v-if="!item.children"
+            :key="item.meta.title"
             link
             target="a"
-            href="javascript;"
-            v-for="child in item.items"
-            :key="child.title"
+            :to="item.path"
             color="primary"
+            @click="listItemHandle(item)"
           >
+            <v-list-item-icon>
+              <v-icon v-text="item.meta.action"></v-icon>
+            </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title v-text="child.title"></v-list-item-title>
+              <v-list-item-title v-text="item.meta.title"></v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-        </v-list-group>
+
+          <v-list-group
+            v-else
+            :key="item.meta.title"
+            v-model="item.meta.active"
+            no-action
+            color="primary"
+          >
+            <template v-slot:activator>
+              <v-list-item-icon>
+                <v-icon v-text="item.meta.action"></v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title v-text="item.meta.title"></v-list-item-title>
+              </v-list-item-content>
+            </template>
+
+            <v-list-item
+              link
+              target="a"
+              v-for="child in item.children"
+              :to="child.path"
+              :key="child.meta.title"
+              color="primary"
+              @click="listItemHandle(child)"
+            >
+              <v-list-item-content>
+                <v-list-item-title
+                  v-text="child.meta.title"
+                ></v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-group>
+        </template>
       </v-list>
     </template>
   </v-navigation-drawer>
 </template>
 <script>
+import { constantRoutes } from '@/router'
+import { mapActions } from 'vuex'
+
 export default {
   name: 'AppNavigationDrawer',
 
   data: () => ({
-    items: [
-      {
-        action: 'mdi-ticket',
-        items: [{ title: 'List Item' }],
-        title: 'Attractions'
-      },
-      {
-        action: 'mdi-silverware-fork-knife',
-        active: true,
-        items: [
-          { title: 'Breakfast & brunch & brunch' },
-          { title: 'New American' },
-          { title: 'Sushi' },
-          { title: 'Breakfast & brunch & brunch1' },
-          { title: 'New American2' },
-          { title: 'Sushi3' },
-          { title: 'Breakfast & brunch & brunch4' },
-          { title: 'New American5' },
-          { title: 'Sushi6' }
-        ],
-        title: 'Dining'
-      },
-      {
-        action: 'mdi-school',
-        items: [{ title: 'List Item' }],
-        title: 'Education'
-      },
-      {
-        action: 'mdi-run',
-        items: [{ title: 'List Item' }],
-        title: 'Family'
-      },
-      {
-        action: 'mdi-bottle-tonic-plus',
-        items: [{ title: 'List Item' }],
-        title: 'Health'
-      },
-      {
-        action: 'mdi-content-cut',
-        items: [{ title: 'List Item' }],
-        title: 'Office'
-      },
-      {
-        action: 'mdi-tag',
-        items: [{ title: 'List Item' }],
-        title: 'Promotions'
-      }
-    ]
+    items: []
   }),
-  mounted() {}
+  computed: {},
+  mounted() {
+    console.log(constantRoutes)
+    this.items = constantRoutes
+  },
+  methods: {
+    ...mapActions(['tabViews/addTabView']),
+    listItemHandle(values) {
+      console.log(values)
+
+      this['tabViews/addTabView'](values)
+    }
+  }
 }
 </script>
 
@@ -126,5 +118,11 @@ export default {
 
 .border {
   border: 2px dashed orange;
+}
+
+.gy-navigation-drawer {
+  ::v-deep .v-navigation-drawer__content {
+    border-right: thin solid rgba(0, 0, 0, 0.12);
+  }
 }
 </style>

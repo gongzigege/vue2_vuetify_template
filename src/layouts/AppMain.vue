@@ -7,7 +7,9 @@
     <v-icon color="red" v-html="'$404'"> </v-icon> -->
 
     <v-container fluid>
-      <router-view></router-view>
+      <v-expand-transition>
+        <router-view></router-view>
+      </v-expand-transition>
     </v-container>
   </v-main>
 </template>

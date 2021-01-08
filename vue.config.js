@@ -8,7 +8,7 @@ function resolve(dir) {
 
 module.exports = {
   publicPath: '/',
-  outputDir: 'dist',
+  outputDir: 'dist/vue2_vuetify_template',
   assetsDir: 'static',
   lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,

@@ -19,9 +19,15 @@
       :title="tabView.meta.title"
       :to="tabView.path"
     >
-      <span class="gy-tab--text">{{ tabView.meta.title }} </span>
-      <v-btn icon small class="gy-btn--close" @click="closeTabs(tabView)">
-        <v-icon size="18">mdi-close</v-icon>
+      <span class="gy-tab--text">{{ tabView.meta.title }}</span>
+      <v-btn
+        icon
+        x-small
+        plain
+        class="gy-btn--close"
+        @click="closeTabs(tabView)"
+      >
+        <v-icon size="14">mdi-close</v-icon>
       </v-btn>
     </v-tab>
   </v-tabs>
@@ -52,50 +58,52 @@ export default {
   border-bottom-color: rgba(0, 0, 0, 0.12) !important;
 }
 </style>
+
 <style lang="scss" scoped>
+.v-tab {
+  padding: 0 4px;
+  text-transform: none;
+  justify-content: space-between;
+  max-width: 160px;
+}
+
 .gy-tab {
-  padding: 0 0 0 12px;
 }
 
 .gy-tab--text {
-  position: relative;
-  display: inline-block;
-  height: 100%;
-  line-height: 36px;
-  min-width: 8rem; // 4 * 16px
-  max-width: 10rem;
+  //   position: relative;
+  width: calc(100% - 24px);
   overflow: hidden;
   white-space: nowrap;
-  font-size: 0.8125rem;
-  text-align: left;
 }
 
-.gy-tab--text::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: auto;
-  right: 0;
-  padding-left: 1rem;
-  height: 100%;
-  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 1));
-}
+// .gy-tab--text::after {
+//   content: '';
+//   position: absolute;
+//   top: 0;
+//   bottom: auto;
+//   right: 0;
+//   padding-left: 1rem;
+//   height: 100%;
+//   background: linear-gradient(to right, transparent, rgba(255, 255, 255, 1));
+// }
 
 .gy-tab::after {
   content: '';
   position: absolute;
-  top: 0;
+  top: 24%;
   bottom: auto;
   right: 0;
   width: 1px;
-  height: 100%;
-  background-color: #4caf50;
+  height: 52%;
+  background-color: #1976d2;
 }
 
 .gy-tab--active {
-  background-color: #4caf50;
+  background-color: #1976d2;
   .gy-btn--close {
     opacity: 1;
+    background-color: #1976d2;
   }
   .gy-tab--text::after {
     background: linear-gradient(to right, transparent, rgba(97, 184, 101, 0.9));
@@ -107,6 +115,6 @@ export default {
 }
 
 .gy-btn--close {
-  opacity: 0;
+  // opacity: 0;
 }
 </style>

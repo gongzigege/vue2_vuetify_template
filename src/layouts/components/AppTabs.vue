@@ -17,35 +17,36 @@
       v-for="tabView in visitedTabViews"
       :key="tabView.path"
       :title="tabView.meta.title"
-      :to="tabView.path"
+      :to="{ name: tabView.name, query: tabView.query }"
     >
+      <v-icon left size="20">{{ tabView.meta.action }}</v-icon>
       <span class="gy-tab--text">{{ tabView.meta.title }}</span>
-      <v-btn
-        icon
-        x-small
-        plain
-        class="gy-btn--close"
-        @click="closeTabs(tabView)"
-      >
-        <v-icon size="14">mdi-close</v-icon>
+      <v-btn icon x-small plain class="gy-btn--close" @click.prevent.stop="closeTabs(tabView)">
+        <v-icon size="16">mdi-close</v-icon>
       </v-btn>
     </v-tab>
   </v-tabs>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'AppTabs',
   computed: {
-    ...mapGetters(['visitedTabViews'])
+    ...mapGetters({
+      visitedTabViews: 'visitedTabViews'
+    })
   },
   mounted() {
     console.log(this.visitedTabViews)
   },
   methods: {
+    ...mapActions({
+      removeVisitedTabViews: 'tabViews/removeVisitedTabViews'
+    }),
     closeTabs(values) {
       console.log(values)
+      this.removeVisitedTabViews(values)
     }
   }
 }

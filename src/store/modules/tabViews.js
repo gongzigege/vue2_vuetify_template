@@ -1,5 +1,7 @@
+import webStorage from '@/utils/webStorage'
+
 const state = {
-  visitedTabViews: []
+  visitedTabViews: webStorage.GetSessionStorage('tabView') || []
 }
 const mutations = {
   ADD_VISITED_TAB_VIEW: (state, view) => {
@@ -9,6 +11,15 @@ const mutations = {
         title: view.meta.title || 'no-name'
       })
     )
+    webStorage.SetSessionStorage('tabView', state.visitedTabViews)
+  },
+  REMOVE_VISITED_TAB_VIEW: (state, view) => {
+    state.visitedTabViews.forEach((views, index, self) => {
+      if (views.path === view.path) {
+        self.splice(index, 1)
+      }
+    })
+    webStorage.SetSessionStorage('tabView', state.visitedTabViews)
   }
 }
 const actions = {
@@ -17,6 +28,9 @@ const actions = {
   },
   addVisitedTabView({ commit }, view) {
     commit('ADD_VISITED_TAB_VIEW', view)
+  },
+  removeVisitedTabViews({ commit }, view) {
+    commit('REMOVE_VISITED_TAB_VIEW', view)
   }
 }
 

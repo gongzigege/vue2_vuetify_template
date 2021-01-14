@@ -7,7 +7,7 @@ import SvgIcon from '@/components/Icons'
 // 由Vuetify（javascript）提供的翻译
 import zhHans from 'vuetify/es5/locale/zh-Hans'
 
-import i18n from '@/locales/i18n'
+// import i18n from '@/locales/i18n'
 
 Vue.use(Vuetify)
 
@@ -58,7 +58,6 @@ const options = {
   }
 }
 
-console.log(i18n.messages)
 export default new Vuetify({
   ...options,
   lang: {

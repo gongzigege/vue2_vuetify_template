@@ -31,85 +31,27 @@
     </template>
 
     <template #default>
-      <v-list nav dense>
-        <template v-for="item in items">
-          <v-list-item
-            v-if="!item.children"
-            :key="item.meta.title"
-            link
-            target="a"
-            :to="item.path"
-            color="primary"
-            @click="listItemHandle(item)"
-          >
-            <v-list-item-icon>
-              <v-icon v-text="item.meta.action"></v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title v-text="item.meta.title"></v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-
-          <v-list-group
-            v-else
-            :key="item.meta.title"
-            v-model="item.meta.active"
-            no-action
-            color="primary"
-          >
-            <template v-slot:activator>
-              <v-list-item-icon>
-                <v-icon v-text="item.meta.action"></v-icon>
-              </v-list-item-icon>
-              <v-list-item-content>
-                <v-list-item-title v-text="item.meta.title"></v-list-item-title>
-              </v-list-item-content>
-            </template>
-
-            <v-list-item
-              link
-              target="a"
-              v-for="child in item.children"
-              :to="child.path"
-              :key="child.meta.title"
-              color="primary"
-              @click="listItemHandle(child)"
-            >
-              <v-list-item-content>
-                <v-list-item-title
-                  v-text="child.meta.title"
-                ></v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list-group>
-        </template>
-      </v-list>
+      <AppNavigationDrawerList :routes="routes" />
     </template>
   </v-navigation-drawer>
 </template>
 <script>
 import { constantRoutes } from '@/router'
-import { mapActions } from 'vuex'
 
 export default {
   name: 'AppNavigationDrawer',
+  components: {
+    AppNavigationDrawerList: () => import('./components/AppNavigationDrawerList')
+  },
 
   data: () => ({
-    items: []
+    routes: []
   }),
   computed: {},
   mounted() {
-    console.log(constantRoutes)
-    this.items = constantRoutes
+    this.routes = constantRoutes
   },
-  methods: {
-    ...mapActions(['tabViews/addTabView']),
-    listItemHandle(values) {
-      console.log(values)
-
-      this['tabViews/addTabView'](values)
-    }
-  }
+  methods: {}
 }
 </script>
 

@@ -7,15 +7,26 @@ Vue.use(VueRouter)
 
 export const constantRoutes = [
   {
-    path: '/layout',
+    path: '/',
     component: Layout,
+    redirect: '/dashboard',
+    // hidden: true,
     meta: {
-      title: 'Layout',
+      title: 'Dashboard',
       action: 'mdi-silverware-fork-knife'
-    }
+    },
+    children: [
+      {
+        path: 'dashboard',
+        component: () => import('@/views/Dashboard'),
+        name: 'Dashboard',
+        hidden: true,
+        meta: { title: 'Dashboard', action: 'mdi-silverware-fork-knife', affix: true }
+      }
+    ]
   },
   {
-    path: '/',
+    path: '/index',
     component: Layout,
     redirect: { name: 'Home' },
     meta: {
@@ -28,7 +39,8 @@ export const constantRoutes = [
         component: () => import('@/views/Home'),
         name: 'Home',
         meta: {
-          title: '首页'
+          title: '首页',
+          action: 'mdi-silverware-fork-knife'
         }
       },
       {
@@ -36,7 +48,8 @@ export const constantRoutes = [
         component: () => import('@/views/About'),
         name: 'About',
         meta: {
-          title: '关于'
+          title: '关于',
+          action: 'mdi-silverware-fork-knife'
         }
       }
     ]
@@ -51,7 +64,7 @@ export const asyncRoutes = [
 
 const createRouter = () =>
   new VueRouter({
-    // mode: 'history',
+    mode: 'history',
     scrollBehavior: () => ({ y: 0 }),
     routes: constantRoutes
   })

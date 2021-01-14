@@ -1,7 +1,7 @@
 // https://prettier.io/docs/en/options.html
 module.exports = {
   // 代码单行最大长度
-  printWidth: 80,
+  printWidth: 100,
   tabWidth: 2,
   // 缩进使用 tabs 代替 空格
   useTabs: false,

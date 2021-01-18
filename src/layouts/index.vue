@@ -1,7 +1,9 @@
 <template>
   <v-app id="guiyang">
     <AppBar />
-    <AppNavigationDrawer />
+
+    <AppNavDrawer />
+
     <AppMain />
   </v-app>
 </template>
@@ -11,7 +13,7 @@ export default {
 
   components: {
     AppBar: () => import('./AppBar'),
-    AppNavigationDrawer: () => import('./AppNavigationDrawer'),
+    AppNavDrawer: () => import('./AppNavDrawer'),
     AppMain: () => import('./AppMain')
   },
 

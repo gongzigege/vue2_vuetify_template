@@ -38,7 +38,7 @@ export default {
     })
   },
   mounted() {
-    console.log(this.visitedTabViews)
+    // console.log(this.visitedTabViews)
   },
   methods: {
     ...mapActions({

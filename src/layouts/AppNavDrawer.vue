@@ -6,7 +6,7 @@
     disable-route-watcher
     width="300"
     class="gy-navigation-drawer"
-    v-model="$store.state.app.appbar.opened"
+    v-model="drawer"
   >
     <template #prepend>
       <div class="d-flex align-center gy-bar--underline" style="height: 64px;">
@@ -29,27 +29,33 @@
         />
       </div>
     </template>
+    <keep-alive>
+      <AppNavDrawerList :routes="routes" />
+    </keep-alive>
 
-    <template #default>
-      <AppNavigationDrawerList :routes="routes" />
-    </template>
+    <div class="pt-12" />
   </v-navigation-drawer>
 </template>
 <script>
-import { constantRoutes } from '@/router'
+import { constantRoutes, asyncRoutes } from '@/router'
 
 export default {
-  name: 'AppNavigationDrawer',
+  name: 'AppNavDrawer',
   components: {
-    AppNavigationDrawerList: () => import('./components/AppNavigationDrawerList')
+    AppNavDrawerList: () => import('./components/AppNavDrawerList')
   },
 
   data: () => ({
-    routes: []
+    drawer: null
   }),
-  computed: {},
+  computed: {
+    routes() {
+      return constantRoutes.concat(asyncRoutes)
+    }
+  },
+  created() {},
   mounted() {
-    this.routes = constantRoutes
+    this.drawer = this.$store.state.app.appbar.opened
   },
   methods: {}
 }

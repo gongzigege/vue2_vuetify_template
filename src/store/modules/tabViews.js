@@ -5,21 +5,33 @@ const state = {
 }
 const mutations = {
   ADD_VISITED_TAB_VIEW: (state, view) => {
-    if (state.visitedTabViews.some((v) => v.path === view.path)) return
+    // ! 直接使用 $route 在 JSON.stringify() 转换时会抛出异常TypeError ("cyclic object value")（循环对象值）
+    const views = {
+      fullPath: view.fullPath,
+      hash: view.hash,
+      meta: view.meta,
+      name: view.name,
+      params: view.params,
+      path: view.path,
+      query: view.query,
+      title: view.title
+    }
+    if (state.visitedTabViews.some((v) => v.path === views.path)) return
     state.visitedTabViews.push(
-      Object.assign({}, view, {
-        title: view.meta.title || 'no-name'
+      Object.assign({}, views, {
+        title: views.meta.title || 'no-name'
       })
     )
     webStorage.SetSessionStorage('tabView', state.visitedTabViews)
   },
   REMOVE_VISITED_TAB_VIEW: (state, view) => {
-    state.visitedTabViews.forEach((views, index, self) => {
-      if (views.path === view.path) {
-        self.splice(index, 1)
+    for (const [i, v] of state.visitedTabViews.entries()) {
+      if (v.path === view.path) {
+        state.visitedTabViews.splice(i, 1)
+        webStorage.SetSessionStorage('tabView', state.visitedTabViews)
+        break
       }
-    })
-    webStorage.SetSessionStorage('tabView', state.visitedTabViews)
+    }
   }
 }
 const actions = {
@@ -29,8 +41,19 @@ const actions = {
   addVisitedTabView({ commit }, view) {
     commit('ADD_VISITED_TAB_VIEW', view)
   },
-  removeVisitedTabViews({ commit }, view) {
-    commit('REMOVE_VISITED_TAB_VIEW', view)
+  removeTabView({ dispatch, state }, view) {
+    return new Promise((resolve) => {
+      dispatch('removeVisitedTabViews', view)
+      resolve({
+        visitedTabViews: [...state.visitedTabViews]
+      })
+    })
+  },
+  removeVisitedTabViews({ commit, state }, view) {
+    return new Promise((resolve) => {
+      commit('REMOVE_VISITED_TAB_VIEW', view)
+      resolve([...state.visitedTabViews])
+    })
   }
 }
 

@@ -41,3 +41,8 @@ See [Vuetify](https://vuetifyjs.com/zh-Hans/getting-started/installation/#vue-cl
 ```
 vue add vuetify
 ```
+
+commit-template
+husky
+commitizen-with-conventional-changelog
+commitizen-with-commitlint

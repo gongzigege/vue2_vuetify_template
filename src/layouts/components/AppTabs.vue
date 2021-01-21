@@ -19,9 +19,16 @@
       :title="tabView.meta.title"
       :to="{ name: tabView.name, query: tabView.query }"
     >
-      <v-icon left size="20">{{ tabView.meta.action }}</v-icon>
+      <v-icon v-if="tabView.meta.icon" left size="20">{{ tabView.meta.icon }}</v-icon>
       <span class="gy-tab--text">{{ tabView.meta.title }}</span>
-      <v-btn icon x-small plain class="gy-btn--close" @click.prevent.stop="closeTabs(tabView)">
+      <v-btn
+        v-if="!tabView.meta.fixTab"
+        icon
+        x-small
+        plain
+        class="gy-btn--close"
+        @click.prevent.stop="closeTabs(tabView)"
+      >
         <v-icon size="16">mdi-close</v-icon>
       </v-btn>
     </v-tab>
@@ -29,24 +36,111 @@
 </template>
 
 <script>
+/**
+ * Tbas
+ *  除固定 tab 外，缓存的都是 this.$route
+ */
 import { mapActions, mapGetters } from 'vuex'
+import path from 'path'
+
+import { constantRoutes, asyncRoutes } from '@/router'
+
 export default {
   name: 'AppTabs',
   computed: {
     ...mapGetters({
       visitedTabViews: 'visitedTabViews'
-    })
+    }),
+    routes() {
+      // TODO 添加权限之后得使用已有权限的路由 - wangjiangui/20210121
+      return constantRoutes.concat(asyncRoutes)
+    }
+  },
+  watch: {
+    $route() {
+      this.addTab()
+    }
   },
   mounted() {
-    // console.log(this.visitedTabViews)
+    this.initTabs()
+    this.addTab()
   },
   methods: {
     ...mapActions({
-      removeVisitedTabViews: 'tabViews/removeVisitedTabViews'
+      addTabView: 'tabViews/addTabView',
+      removeTabView: 'tabViews/removeTabView'
     }),
-    closeTabs(values) {
-      console.log(values)
-      this.removeVisitedTabViews(values)
+    isActive(route) {
+      return route.path === this.$route.path
+    },
+    /**
+     * 过滤出固定Tab
+     * @param {array} routes - 拥有权限的路由集合
+     * @returns {array} 固定的Tab
+     */
+    filterFixTab(routes, basePath = '/') {
+      let tags = []
+      routes.forEach((route) => {
+        if (route.meta && route.meta.fixTab) {
+          const tagPath = path.resolve(basePath, route.path)
+          tags.push({
+            fullPath: tagPath,
+            path: tagPath,
+            name: route.name,
+            meta: { ...route.meta }
+          })
+        }
+        if (route.children) {
+          const tempTags = this.filterFixTab(route.children, route.path)
+          if (tempTags.length >= 1) {
+            tags = [...tags, ...tempTags]
+          }
+        }
+      })
+      return tags
+    },
+    // 初始化 Tabs
+    // 添加固定的 tab,即路由 meta 对象中包含 fixTab 属性的路由
+    initTabs() {
+      const affixTags = (this.affixTags = this.filterFixTab(this.routes))
+      for (const tag of affixTags) {
+        // Must have tag name
+        if (tag.name) {
+          this.addTabView(tag)
+        }
+      }
+    },
+    addTab() {
+      const { name } = this.$route
+      if (name) {
+        this.addTabView(this.$route)
+      }
+      return false
+    },
+    closeTabs(view) {
+      console.log(view)
+      this.removeTabView(view).then(({ visitedTabViews }) => {
+        console.log(visitedTabViews)
+        if (this.isActive(view)) {
+          this.toLastView(visitedTabViews, view)
+        }
+      })
+    },
+
+    toLastView(visitedViews, view) {
+      const latestView = visitedViews.slice(-1)[0]
+      if (latestView) {
+        this.$router.push(latestView.fullPath)
+      } else {
+        // now the default is to redirect to the home page if there is no tags-view,
+        // you can adjust it according to your needs.
+        if (view.name === 'Dashboard') {
+          // to reload home page
+          this.$router.replace({ path: '/redirect' + view.fullPath })
+        } else {
+          this.$router.push('/')
+        }
+      }
     }
   }
 }

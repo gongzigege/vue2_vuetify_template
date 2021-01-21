@@ -50,6 +50,7 @@ export default {
   }),
   computed: {
     routes() {
+      // TODO 添加权限之后得使用已有权限的路由 - wangjiangui/20210121
       return constantRoutes.concat(asyncRoutes)
     }
   },

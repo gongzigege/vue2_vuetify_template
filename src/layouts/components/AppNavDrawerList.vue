@@ -21,6 +21,7 @@
 <script>
 /**
  * !BUG 只有一个路由时，子路由作为默认路由.但是此条 Item 没有选中状态的样式呈现
+ * * v-list、v-list-group、v-list-item会自动更加当前 URL 确定选中的item
  */
 
 export default {

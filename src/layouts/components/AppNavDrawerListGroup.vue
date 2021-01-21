@@ -14,6 +14,7 @@
     </template>
 
     <template v-for="child in item.children">
+      <!-- 三级菜单 -->
       <AppNavDrawerListGroup
         v-if="child.children"
         :key="`sub-group-${child.name}`"
@@ -21,7 +22,7 @@
         :basePath="`${basePath}/${child.path}`"
         sub-group
       />
-
+      <!-- 二级菜单 -->
       <AppNavDrawerListItem
         v-else
         :key="`child-${child.name}`"

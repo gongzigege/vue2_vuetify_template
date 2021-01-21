@@ -8,8 +8,8 @@
     v-bind="$attrs"
     v-on="$listeners"
   >
-    <v-list-item-icon v-if="item.icon">
-      <v-icon v-text="item.icon" />
+    <v-list-item-icon v-if="item.meta.icon">
+      <v-icon v-text="item.meta.icon" />
     </v-list-item-icon>
 
     <v-list-item-content>

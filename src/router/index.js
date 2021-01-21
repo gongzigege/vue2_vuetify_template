@@ -7,10 +7,9 @@ Vue.use(VueRouter)
 
 /**
  * !!! 注意：
- *
  * hidden: true                               如果设置为 true 则不展示在侧边栏(默认为 false)
  * name: 'RouteName'                          这个名称用于 <keep-alive> // !!!必须设置
- * meta: {
+ * meta: {                                    当只有一个路由时，meta 需要添加在子路由中
  *  roles: ['admin', 'editor']                控制页面角色(权限) - 可以设置多个
  *  title: 'title'                            用于显示在侧边栏和 Tab - 建议设置
  *  icon: 'vuetify-icon-name'/'svg-name'    用于显示在侧边栏和 Tab
@@ -22,16 +21,12 @@ export const constantRoutes = [
     path: '/',
     component: Layout,
     redirect: '/dashboard',
-    meta: {
-      title: 'Dashboard',
-      icon: 'mdi-silverware-fork-knife'
-    },
     children: [
       {
         path: 'dashboard',
         component: () => import('@/views/Dashboard'),
         name: 'Dashboard',
-        meta: { title: 'Dashboard', tabsFix: true }
+        meta: { title: 'Dashboard', icon: 'mdi-silverware-fork-knife', tabsFix: true }
       }
     ]
   }

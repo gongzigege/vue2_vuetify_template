@@ -162,9 +162,6 @@ export default {
   max-width: 160px;
 }
 
-.gy-tab {
-}
-
 .gy-tab--text {
   //   position: relative;
   width: calc(100% - 24px);
@@ -207,9 +204,5 @@ export default {
 
 .gy-tab:not(.gy-tab--active):hover .gy-btn--close {
   opacity: 0.54;
-}
-
-.gy-btn--close {
-  // opacity: 0;
 }
 </style>
